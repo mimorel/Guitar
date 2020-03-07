@@ -1,3 +1,3 @@
 # Guitar
 
-# Model Representation of a guitar fretboard
+ Model Representation of a guitar fretboard
