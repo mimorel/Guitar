@@ -13,24 +13,30 @@ public class GuitarBoard implements FretBoard {
   static int[] regularTuning = {7, 0, 5, 10, 2, 7};
   static int[] OpenD = {5, 0, 5, 9, 0, 5};
   static int[] DropD = {5, 0, 5, 10, 2, 7};
-  String[] noteValues = {"A ", "A#", "B ", "C ", "C#", "D ", "D#", "E ", "F ", "F#", "G ", "G#"};
+  NoteValue[] noteValues = {NoteValue.A, NoteValue.ASharp, NoteValue.B, NoteValue.C,
+      NoteValue.CSharp, NoteValue.D, NoteValue.DSharp, NoteValue.E, NoteValue.F, NoteValue.FSharp,
+      NoteValue.G, NoteValue.GSharp};
 
-  String[][] boardArray;
+
+  NoteValue[][] boardArray;
   int capo;
   int[] t;
+  boolean isSharp;
 
   /**
    * Constructor for guitar model.
    *
    * @param t    type of tuning, {Tuning}, can't be null.
    * @param capo where capo is on guitar neck, 0 = no capo. Must be positive & < 10.
+   * @param isSharp whether sharps or flats are being used in the key signature.
    */
-  public void GuitarBoard(Tuning t, int capo) {
+  public GuitarBoard(Tuning t, int capo, boolean isSharp) {
     if (t == null || capo < 0 || capo >= 10) {
       throw new IllegalArgumentException("invalid capo placement or tuning");
     }
-    this.boardArray = new String[22][6];
-    ;
+    this.boardArray = new NoteValue[22][6];
+    this.isSharp = isSharp;
+
 
     this.capo = capo;
     switch (t) {
@@ -56,7 +62,7 @@ public class GuitarBoard implements FretBoard {
    * Creates a guitarBoard
    */
   private void initializeBoard() {
-    boardArray = new String[22][6];
+    boardArray = new NoteValue[22][6];
 
     for (int j = 0; j < 22; j++) {
       for (int i = 0; i < 6; i++) {
@@ -79,7 +85,10 @@ public class GuitarBoard implements FretBoard {
     for (int j = 0; j < 22; j++) {
       String singleLine = "";
       for (int i = 0; i < 6; i++) {
-        singleLine = (singleLine + (boardArray[j][i] + " "));
+        String s;
+        if(isSharp) {
+          s = boardArray[j][i].getSharpString();} else { s = boardArray[j][i].getFlatString();}
+        singleLine = (singleLine + s + " ");
       }
       totalBoard = totalBoard + "\n" + singleLine;
     }
@@ -87,15 +96,13 @@ public class GuitarBoard implements FretBoard {
   }
 
   @Override
-  public String[][] getFretBoard() {
+  public NoteValue[][] getFretBoard() {
 
-    String[][] copyArray;
-    copyArray = new String[22][6];
+    NoteValue[][] copyArray;
+    copyArray = new NoteValue[22][6];
 
     for (int j = 0; j < 22; j++) {
-      System.out.print(j + this.capo);
       for (int i = 0; i < 6; i++) {
-        System.out.println(this.boardArray[j][i]);
         copyArray[j][i] = this.boardArray[j][i];
       }
     }

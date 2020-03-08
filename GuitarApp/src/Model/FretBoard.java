@@ -18,5 +18,5 @@ public interface FretBoard {
    * Gets a array with fretboard model
    * @return  StringArray with model info.
    */
-  String[][] getFretBoard();
+  NoteValue[][] getFretBoard();
 }
